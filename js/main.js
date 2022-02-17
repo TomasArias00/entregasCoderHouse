@@ -156,5 +156,3 @@ alert('Gracias por su compra!\nEl monto total a pagar es de: $'+precioTotal+'.')
 
 
 
-
-
