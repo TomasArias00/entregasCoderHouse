@@ -1,32 +1,175 @@
+$fuente1: 'Gotham Rounded', sans-serif;
+$azulGrido: #10069f;
+$hoverBlue: #41afe4;
+
+
 body{
     width: 100vw;
     height: 100vh;
     padding: 0;
     margin: 0;
-    
 }
+
+
+@media screen and (min-width: 720px){
+
+body{
+    width: 100vw;
+}
+//-----NAV BAR & LOGO-----
 .header__container{
-    background-color: #10069f;
+    background-color: $azulGrido;
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    height: 100%;
+    height: 5rem;
+
+    .header__logo__container{
+        width: 15%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        .header__logo{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+
+            .header__logo__img{
+                height: 85%;
+                padding-left: 2.5rem;
+            }
+        }
+    }
+
+    .header__nav{
+        display: flex;
+        justify-content: end;
+        width: 80%;
+        
+        .header__ul{
+            display: flex;
+            justify-content: right;
+            list-style: none;
+            padding-right: 5rem;
+            padding-left: 5rem;
+            align-items: center;
+
+            .header__li__container{
+                padding: 3%;
+                text-decoration: none;
+                :hover{
+                    transform: translateY(-2px);
+                    transform: scale(1.1);
+                }
+
+                .header__li{
+                    display: flex;
+                    align-items: center;
+                    font-family: $fuente1;
+                    font-weight: 500;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+//-----BUSCADOR & CARRITO-----
+
+.buscador__container{
+    height: 4rem;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    position: relative;
-
+    align-items: center;
+    width: 100%;
     
 
-    .header__logo{
-        position: absolute;
-        padding-top: 5%;
+    .buscador{
+        height: 100%;
+        width: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+
+        #buscador__filtro{
+            width: 60%;
+            height: 1.6rem;
+            border-color: rgba(0, 0, 0, 0.767);
+            border-radius: 7px;
+            font-family: $fuente1;
+            font-weight: 350;
+        }
+
+        .boton__filtro{
+            border-radius: 6px;
+            height: 60%;
+            width: 6rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $azulGrido;
+
+            p{
+                color: white;
+                font-family: $fuente1;
+            }
+        }
     }
 
-    .header__title{
-        position: absolute;
-        text-align: center;
-        color: white;
-        padding-top: 15%;
-        font-family: 'Anton', sans-serif;
-        font-size: 35PX;
+    .buscador__carrito{
+        height: 100%;
+        width: 15%;
+        display: flex;
+        justify-content: right;
+        padding-right: 2rem;
+
+        .buscador__carrito__svg{
+            height: 100%;
+            display: flex;
+            justify-content: right;
+            color: black;
+            align-items: center;
+            svg{    
+                height: 40%;
+            }
+            :hover{
+                transform: scale(1.08);
+                transition: 0.5s;
+            }
     }
+    }
+}
+
+
+//-----CARDS & ITEMS-----
+
+.seccion__listado{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 20rem;
+    padding: 3rem 0rem;
+
+    .cards__container{
+        width: 70%;
+        display: flex;
+        justify-content: space-around;
+        border-right: 2px solid rgba(0, 0, 0, 0.767);
+        border-left: 2px solid  rgba(0, 0, 0, 0.767);
+
+        .card__item{
+            width: 20%;
+            height: 100%;
+            background-color: red;
+        }
+    }
+
+}
+
+
 }
