@@ -1,9 +1,9 @@
-function Producto(nombre, stock, precio, promo, sabor, categoria){
+function Producto(nombre, stock, precio, promo, imagen, categoria){
     this.name = nombre;
     this.stock = stock;
     this.price = precio;
     this.promo = promo;
-    this.sabor = sabor;
+    this.imagen = imagen;
     this.categoria = categoria;
 
     this.sell = function(quantity) {
@@ -29,10 +29,10 @@ function Producto(nombre, stock, precio, promo, sabor, categoria){
     }
 }
 
-const producto1 = new Producto('Pizza Frizzio', 3, 320, 0.90, 'mozzarella', 'frizzio');
-const producto2 = new Producto('Tentación', 1, 180, 0.90, 'chocolate','helado');
-const producto3 = new Producto('Hamburguesa Frizzio', 5, 250, 0.95, 'carne', 'frizzio')
-const producto4 = new Producto('Bombon Escoces', 12, 150, 0.80, 'escoces', 'bombones')
+const producto1 = new Producto('Pizza Frizzio', 3, 320, 0.90, './media/img/muza-y-cebolla.png"', 'frizzio');
+const producto2 = new Producto('Tentación', 1, 180, 0.90, './media/img/tentacion-cadbury.jpg','helado');
+const producto3 = new Producto('Empanadas Frizzio', 5, 250, 0.95, './media/img/empanadas-grido.png', 'frizzio')
+const producto4 = new Producto('Bombon Escoces', 12, 150, 0.80, './media/img/bombon-escoces.jpg', 'bombones')
 
 const productos = [producto1, producto2, producto3, producto4];
 let listadoProductos='';
@@ -42,49 +42,95 @@ let carrito = '';
 let totalAPagar = 0;
 let totalAPagarEfectivo = 0;
 
-//crear el listado de prodcutos disponibles
-for(names in productos){
-    let indice = parseInt(names) + 1;
-    listadoProductos += indice+'- '+productos[names].name+'\n';
+
+let newCard = document.createElement('div');
+let cards__container = document.querySelector('.cards__container');
+
+for (const producto of productos){
+    let contenedor = document.createElement("div");
+    contenedor.className = "card__item";
+
+    contenedor.innerHTML = `<div class="card__img">
+                            <img src="${producto.imagen}" alt="" class="card__bg">
+                            </div>
+                            <div class="card__titulo">
+                                ${producto.name}
+                            </div>
+                            <div class="card__descrip">
+                                
+                            </div>
+                            <div class="card__button">
+                                <button class="card__buy">
+                                    Agregar al Carrito
+                                </button>
+                            </div>`
+
+    cards__container.appendChild(contenedor);
 }
 
-do{
-productoCompra = parseInt(prompt('Bienvenido a Grido!\nQue te gustaría comprar?\n'+listadoProductos))
+// function viewsArrayInput(){
+//     let arrayInput = new Array();
+//     let inputValues = document.getElementsByClassName("buscador__filtro"),
+//     namesValues = [].map.call(inputValues,function(dataInput){
+//         arrayInput.push(dataInput.value);
+//     });
+//     arrayInput.forEach(function(inputsValuesData){
+//         switch(arrayInput.toString()){
+//             case(producto1.name):
+//             console.log(producto1);
+//             break;
+//             case(!producto1.name)
+//             console.log("Producto invalido!")
+//         }
 
-switch(productoCompra){
-    case(1):
-    cantidadProducto = parseInt(prompt('El precio de las Pizzas Frizzio es de: $'+producto1.price+'\nCuantas vas a llevar?'));
-    producto1.sell(cantidadProducto)
+//     });
+//  }
 
-    break;
-    case(2):
-    cantidadProducto = parseInt(prompt('El precio del Helado Tentación es de: $'+producto2.price+'\nCuantos vas a llevar?'));
-    producto2.sell(cantidadProducto)
 
-    break;
-    case(3):
-    cantidadProducto = parseInt(prompt('El precio de las Hamburguesas Frizzio es de: $'+producto3.price+'\nCuantas vas a llevar?'));
-    producto3.sell(cantidadProducto)
+//crear el listado de prodcutos disponibles
+// for(names in productos){
+//     let indice = parseInt(names) + 1;
+//     listadoProductos += indice+'- '+productos[names].name+'\n';
+// }
 
-    break;
-    case(4):
-    cantidadProducto = parseInt(prompt('El precio del Bomboón Escocés es de: $'+producto4.price+'\nCuantos vas a llevar?'));
-    producto4.sell(cantidadProducto)
+// do{
+// productoCompra = parseInt(prompt('Bienvenido a Grido!\nQue te gustaría comprar?\n'+listadoProductos))
 
-    break;
+// switch(productoCompra){
+//     case(1):
+//     cantidadProducto = parseInt(prompt('El precio de las Pizzas Frizzio es de: $'+producto1.price+'\nCuantas vas a llevar?'));
+//     producto1.sell(cantidadProducto)
+
+//     break;
+//     case(2):
+//     cantidadProducto = parseInt(prompt('El precio del Helado Tentación es de: $'+producto2.price+'\nCuantos vas a llevar?'));
+//     producto2.sell(cantidadProducto)
+
+//     break;
+//     case(3):
+//     cantidadProducto = parseInt(prompt('El precio de las Hamburguesas Frizzio es de: $'+producto3.price+'\nCuantas vas a llevar?'));
+//     producto3.sell(cantidadProducto)
+
+//     break;
+//     case(4):
+//     cantidadProducto = parseInt(prompt('El precio del Bomboón Escocés es de: $'+producto4.price+'\nCuantos vas a llevar?'));
+//     producto4.sell(cantidadProducto)
+
+//     break;
 
     
-}
-    stillBuying = parseInt(prompt('Quisiera agregar comprar algo más\n1- SI\n2- NO'));
-    if(stillBuying==1){
-        seguirComprando=1;
-    }else if(stillBuying==2){
-        seguirComprando=0;
-    }
+// }
+//     stillBuying = parseInt(prompt('Quisiera agregar comprar algo más\n1- SI\n2- NO'));
+//     if(stillBuying==1){
+//         seguirComprando=1;
+//     }else if(stillBuying==2){
+//         seguirComprando=0;
+//     }
 
-} while(seguirComprando==1)
+// } while(seguirComprando==1)
 
-parseInt(prompt('Tu lista de compras es: '+carrito+'\nEl total a pagar es de: $'+totalAPagar+'\nSi abona en efectivo el total sería de: $'+totalAPagarEfectivo))
+// parseInt(prompt('Tu lista de compras es: '+carrito+'\nEl total a pagar es de: $'+totalAPagar+'\nSi abona en efectivo el total sería de: $'+totalAPagarEfectivo))
+
 // let precioCono = 0;
 // let listadoBochas ="\n";
 // let terminarCompra=0;

@@ -1,3 +1,9 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-family: 'Gotham Rounded', sans-serif;
+}
+
 body {
   width: 100vw;
   height: 100vh;
@@ -90,7 +96,6 @@ body {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    font-family: "Gotham Rounded", sans-serif;
     font-weight: 500;
     color: white;
   }
@@ -120,12 +125,11 @@ body {
         -ms-flex-pack: center;
             justify-content: center;
   }
-  .buscador__container .buscador #buscador__filtro {
+  .buscador__container .buscador .buscador__filtro {
     width: 60%;
     height: 1.6rem;
     border-color: rgba(0, 0, 0, 0.767);
     border-radius: 7px;
-    font-family: "Gotham Rounded", sans-serif;
     font-weight: 350;
   }
   .buscador__container .buscador .boton__filtro {
@@ -145,7 +149,6 @@ body {
   }
   .buscador__container .buscador .boton__filtro p {
     color: white;
-    font-family: "Gotham Rounded", sans-serif;
   }
   .buscador__container .buscador__carrito {
     height: 100%;
@@ -188,23 +191,102 @@ body {
         -ms-flex-pack: center;
             justify-content: center;
     width: 100%;
-    height: 20rem;
+    height: 25rem;
     padding: 3rem 0rem;
   }
   .seccion__listado .cards__container {
     width: 70%;
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: (1fr)[4];
+        grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2.5rem;
+  }
+  .seccion__listado .cards__container .card__item {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
-    border-right: 2px solid rgba(0, 0, 0, 0.767);
-    border-left: 2px solid rgba(0, 0, 0, 0.767);
-  }
-  .seccion__listado .cards__container .card__item {
-    width: 20%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 100%;
     height: 100%;
-    background-color: red;
+    border: 1px solid black;
+    border-radius: 15px;
+  }
+  .seccion__listado .cards__container .card__item .card__img {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .seccion__listado .cards__container .card__item .card__img .card__bg {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 80%;
+  }
+  .seccion__listado .cards__container .card__item .card__titulo {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    color: #10069f;
+    padding-top: 1.5rem;
+  }
+  .seccion__listado .cards__container .card__item .card__descrip {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    color: #10069f;
+    padding-top: 1.5rem;
+  }
+  .seccion__listado .cards__container .card__item .card__button {
+    width: 100%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-top: 1rem;
+  }
+  .seccion__listado .cards__container .card__item .card__button .card__buy {
+    background-color: #10069f;
+    color: White;
+    width: 65%;
+    height: 2rem;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    cursor: pointer;
+  }
+  .seccion__listado .cards__container .card__item :hover .card__bg {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
 }
 /*# sourceMappingURL=main.css.map */
