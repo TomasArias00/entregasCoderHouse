@@ -29,44 +29,141 @@ function Producto(nombre, stock, precio, promo, imagen, categoria){
     }
 }
 
-const producto1 = new Producto('Pizza Frizzio', 3, 320, 0.90, './media/img/muza-y-cebolla.png"', 'frizzio');
-const producto2 = new Producto('Tentación', 1, 180, 0.90, './media/img/tentacion-cadbury.jpg','helado');
-const producto3 = new Producto('Empanadas Frizzio', 5, 250, 0.95, './media/img/empanadas-grido.png', 'frizzio')
-const producto4 = new Producto('Bombon Escoces', 12, 150, 0.80, './media/img/bombon-escoces.jpg', 'bombones')
 
-const productos = [producto1, producto2, producto3, producto4];
+const producto1 = new Producto('PIZZA FRIZZIO', 3, 320, 0.90, './media/img/muza-y-cebolla.png', 'frizzio, all');
+const producto2 = new Producto('TENTACION CADBURY', 1, 180, 0.90, './media/img/tentacion-cadbury.jpg','tentacion, all');
+const producto3 = new Producto('EMPANADAS FRIZZIO', 5, 250, 0.95, './media/img/empanadas-grido.png', 'frizzio, all');
+const producto4 = new Producto('BOMBON ESCOCÉS', 12, 150, 0.80, './media/img/bombon-escoces.jpg', 'bombones, all');
+const producto5 = new Producto('PALITO HELADO FRUTILLA', 12, 150, 0.80, './media/img/palitofrutal-frutilla.jpg', 'palito, all');
+
+
+//-----NO ENCONTRÉ LA FORMA DE HACER LA CARGA A MI ARRAY DESPUES DE CREAR LOS OBJETOS
+
+const productos = [producto1, producto2, producto3, producto4, producto5];
+
+
 let listadoProductos='';
 let numeroProducto=0;
 let seguirComprando=1;
 let carrito = '';
 let totalAPagar = 0;
 let totalAPagarEfectivo = 0;
+let filtroValor = "";
 
 
 let newCard = document.createElement('div');
 let cards__container = document.querySelector('.cards__container');
 
-for (const producto of productos){
-    let contenedor = document.createElement("div");
-    contenedor.className = "card__item";
+const filtroProductos = [];
 
-    contenedor.innerHTML = `<div class="card__img">
-                            <img src="${producto.imagen}" alt="" class="card__bg">
-                            </div>
-                            <div class="card__titulo">
-                                ${producto.name}
-                            </div>
-                            <div class="card__descrip">
-                                
-                            </div>
-                            <div class="card__button">
-                                <button class="card__buy">
-                                    Agregar al Carrito
-                                </button>
-                            </div>`
-
-    cards__container.appendChild(contenedor);
+function mostrarDefalut(){
+for (let i = 0; i < productos.length; i++){
+    filtroProductos.push(productos[i])
 }
+}
+
+function limpiarFiltro(){
+    for(let i = 0; i < filtroProductos.length; i++){
+    filtroProductos.splice(i);
+    console.log("limpiando: "+i)
+    }
+    let list = document.querySelector('.cards__container');
+    list.innerHTML = "";
+}
+
+function mostrarProductos(){
+    for (const producto of filtroProductos){
+        let contenedor = document.createElement("div");
+        contenedor.className = "card__item";
+        contenedor.innerHTML = `<div class="card__img">
+                                <img src="${producto.imagen}" alt="" class="card__bg">
+                                </div>
+                                <div class="card__titulo">
+                                    ${producto.name}
+                                </div>
+                                <div class="card__descrip">
+    
+                                </div>
+                                <div class="card__button" id="${producto.name}">
+                                    <button class="card__buy">
+                                        Agregar al Carrito
+                                    </button>
+                                </div>`
+        cards__container.appendChild(contenedor);
+    }
+    }
+
+
+function filtroBotonera(filtroValor){
+    console.log("Filtrame las: " +filtroValor)
+    limpiarFiltro();
+    const productosFiltrados = productos.filter(x => x.categoria.includes(filtroValor));
+    
+    for(let i=0; i < productos.length; i++){
+        filtroProductos.splice(i);
+    }
+    for(let i=0; i < productosFiltrados.length; i++){
+        filtroProductos.push(productosFiltrados[i]);
+    }
+    console.log(filtroProductos);
+    mostrarProductos();
+}
+
+//-----CARGA INICIAL CON TODOS LOS PRODUCTOS-----
+mostrarDefalut();
+mostrarProductos(); 
+
+
+//-----BOTONES DE FILTRADO-----
+
+//-----BOTON FILTRO FRIZZIO----
+let boton1 = document.getElementById("btn1");
+boton1.addEventListener("click", function(){filtroBotonera("frizzio")});
+
+//-----BOTON FILTRO TENTACIÓN----
+let boton2 = document.getElementById("btn2");
+boton2.addEventListener("click", function(){filtroBotonera("tentacion")});
+
+//-----BOTON FILTRO BOMBONES----
+let boton3 = document.getElementById("btn3");
+boton3.addEventListener("click", function(){filtroBotonera("bombones")});
+
+//-----BOTON FILTRO BOMBONES----
+let boton4 = document.getElementById("btn4");
+boton4.addEventListener("click", function(){filtroBotonera("palito")});
+
+//-----BOTON FILTRO "TODOS"-----
+let boton5 = document.getElementById("btn5");
+boton5.addEventListener("click", function(){filtroBotonera("all")});
+
+
+
+
+//-----BOTONES "AGREGAR AL CARRITO"-----
+
+//-----ESTOY INTENTANDO PENSAR LA LOGICA PARA NO TENER QUE AGREGARLOS UNO POR UNO CON LOS ID's
+let agregarCarrito = document.getElementById("PIZZA FRIZZIO");
+agregarCarrito.addEventListener("click", sumarACarrito);
+
+let agregarCarrito2 = document.getElementById("TENTACION CADBURY");
+agregarCarrito2.addEventListener("click", sumarACarrito);
+
+let agregarCarrito3 = document.getElementById("EMPANADAS FRIZZIO");
+agregarCarrito3.addEventListener("click", sumarACarrito);
+
+let agregarCarrito4 = document.getElementById("BOMBON ESCOCÉS");
+agregarCarrito4.addEventListener("click", sumarACarrito);
+
+let agregarCarrito5 = document.getElementById("PALITO HELADO FRUTILLA");
+agregarCarrito5.addEventListener("click", sumarACarrito);
+
+
+
+
+function sumarACarrito(){
+    alert("Proximamente... Carrito en construcción")
+}
+
 
 // function viewsArrayInput(){
 //     let arrayInput = new Array();

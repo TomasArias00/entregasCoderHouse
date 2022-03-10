@@ -115,44 +115,46 @@ body {
   .buscador__container .buscador {
     height: 100%;
     width: 70%;
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    text-decoration: none;
+    border: none;
+  }
+  .buscador__container .buscador .buscador__filtro {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-  }
-  .buscador__container .buscador .buscador__filtro {
+    text-align: center;
     width: 60%;
-    height: 1.6rem;
-    border-color: rgba(0, 0, 0, 0.767);
-    border-radius: 7px;
-    font-weight: 350;
-  }
-  .buscador__container .buscador .boton__filtro {
-    border-radius: 6px;
-    height: 60%;
-    width: 6rem;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
     background-color: #10069f;
-  }
-  .buscador__container .buscador .boton__filtro p {
+    border-radius: 10px;
     color: white;
+    padding: .5rem 2rem;
+    cursor: pointer;
+  }
+  .buscador__container .buscador .buscador__filtro:hover {
+    background-color: white;
+    color: #10069f;
+    -webkit-transition: .2s;
+    transition: .2s;
+    font-size: 18px;
+    -webkit-transform: scale(1.05);
+            transform: scale(1.05);
   }
   .buscador__container .buscador__carrito {
     height: 100%;
-    width: 15%;
+    width: 10%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -190,17 +192,25 @@ body {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     width: 100%;
-    height: 25rem;
-    padding: 3rem 0rem;
+    height: 30rem;
+    padding: 1.5rem 0rem 1.5rem 0rem;
   }
   .seccion__listado .cards__container {
     width: 70%;
+    height: 100%;
     display: -ms-grid;
     display: grid;
     -ms-grid-columns: (1fr)[4];
         grid-template-columns: repeat(4, 1fr);
     grid-gap: 2.5rem;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0;
   }
   .seccion__listado .cards__container .card__item {
     display: -webkit-box;
@@ -217,8 +227,11 @@ body {
     height: 100%;
     border: 1px solid black;
     border-radius: 15px;
+    -webkit-box-shadow: 0px 3px 8px 1px rgba(56, 56, 56, 0.699);
+            box-shadow: 0px 3px 8px 1px rgba(56, 56, 56, 0.699);
   }
   .seccion__listado .cards__container .card__item .card__img {
+    padding: 1rem 0 1rem 0;
     width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -234,7 +247,7 @@ body {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    width: 80%;
+    width: 70%;
   }
   .seccion__listado .cards__container .card__item .card__titulo {
     display: -webkit-box;
@@ -243,7 +256,9 @@ body {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+    text-align: center;
     color: #10069f;
+    font-weight: 600;
     padding-top: 1.5rem;
   }
   .seccion__listado .cards__container .card__item .card__descrip {
@@ -264,13 +279,15 @@ body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    padding-top: 1rem;
+    padding: 1rem 0 1.5rem 0;
   }
   .seccion__listado .cards__container .card__item .card__button .card__buy {
     background-color: #10069f;
     color: White;
     width: 65%;
     height: 2rem;
+    border-radius: 8px;
+    border: 2px solid black;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
@@ -282,11 +299,11 @@ body {
             justify-content: center;
     cursor: pointer;
   }
-  .seccion__listado .cards__container .card__item :hover .card__bg {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1);
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
+  .seccion__listado .cards__container .card__item:hover {
+    -webkit-transform: scale(1.05);
+            transform: scale(1.05);
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
   }
 }
 /*# sourceMappingURL=main.css.map */
