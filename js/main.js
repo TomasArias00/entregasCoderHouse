@@ -45,10 +45,14 @@ const productos = [producto1, producto2, producto3, producto4, producto5];
 let listadoProductos='';
 let numeroProducto=0;
 let seguirComprando=1;
-let carrito = '';
 let totalAPagar = 0;
 let totalAPagarEfectivo = 0;
 let filtroValor = "";
+let carritoSwitch = 0;
+let carrito = [];
+const divisa = "$"
+
+
 
 
 let newCard = document.createElement('div');
@@ -72,6 +76,7 @@ function limpiarFiltro(){
 }
 
 function mostrarProductos(){
+    cards__container.innerHTML= "";
     for (const producto of filtroProductos){
         let contenedor = document.createElement("div");
         contenedor.className = "card__item";
@@ -82,16 +87,20 @@ function mostrarProductos(){
                                     ${producto.name}
                                 </div>
                                 <div class="card__descrip">
-    
+                                    ${"$"+producto.price}
                                 </div>
                                 <div class="card__button" id="${producto.name}">
                                     <button class="card__buy">
                                         Agregar al Carrito
                                     </button>
                                 </div>`
+
         cards__container.appendChild(contenedor);
+        let miBoton = document.getElementById(producto.name);
+        miBoton.addEventListener("click", function(){sumarACarrito(producto)});
     }
     }
+
 
 
 function filtroBotonera(filtroValor){
@@ -109,9 +118,24 @@ function filtroBotonera(filtroValor){
     mostrarProductos();
 }
 
+
+
 //-----CARGA INICIAL CON TODOS LOS PRODUCTOS-----
 mostrarDefalut();
 mostrarProductos(); 
+obteniendoLocalStorage();
+
+function obteniendoLocalStorage(){
+    let miCarrito = localStorage.getItem("miCarrito");
+    if (miCarrito==undefined){
+    
+    }else{
+        carrito = JSON.parse(miCarrito);
+        let contadorCarrito = document.getElementById("counterCarrito");
+    contadorCarrito.innerText = carrito.length;
+    }
+}
+
 
 
 //-----BOTONES DE FILTRADO-----
@@ -138,31 +162,95 @@ boton5.addEventListener("click", function(){filtroBotonera("all")});
 
 
 
+//------Guardar en LocalStorage-----
+function guardadoJson(){
+    let carritoJson = JSON.stringify(carrito);
+    localStorage.setItem("miCarrito", carritoJson);
+}
+
+
+
+
+
+function sumarACarrito(producto){
+    carrito.push(producto);
+    console.log("insertando: "+producto.name)
+    console.log(carrito);
+    guardadoJson();
+    let contadorCarrito = document.getElementById("counterCarrito");
+    contadorCarrito.innerText = carrito.length;
+}
+
+let botonCarrito = document.getElementById("carrito");
+botonCarrito.addEventListener("click", mostrarCarrito);
+
+function mostrarCarrito(){
+    cards__container.innerHTML= "";
+    if(carritoSwitch==0){
+        carritoSwitch=1;
+    for(producto of carrito){
+        let contenedorCarrito = document.createElement("div");
+        contenedorCarrito.className = "card__item";
+        contenedorCarrito.innerHTML = `<div class="card__img">
+                                <img src="${producto.imagen}" alt="" class="card__bg">
+                                </div>
+                                <div class="card__titulo">
+                                    ${producto.name}
+                                </div>
+                                <div class="card__descrip">
+                                    ${"$"+producto.price}
+                                </div>
+                                <div class="card__button" id="${producto.name}">
+                                    <button class="card__buy">
+                                        Quitar del carrito
+                                    </button>
+                                </div>
+                                <div>CARRITO</div>`
+        cards__container.appendChild(contenedorCarrito);
+        let miBotonQuitar = document.getElementById(producto.name);
+        miBotonQuitar.addEventListener("click", function(){quitarDelCarrito(producto)});
+        }
+        
+        
+    } else{
+        mostrarProductos();
+        carritoSwitch=0;
+    }
+}
+
+function quitarDelCarrito(producto){
+    console.log(producto);
+    carritoIndice = carrito.indexOf(producto);
+    if (carritoIndice > -1) {
+        carrito.splice(carritoIndice, 1);
+     }
+    carritoSwitch=0;
+    mostrarCarrito();
+    let contadorCarrito = document.getElementById("counterCarrito");
+    contadorCarrito.innerText = carrito.length;
+}
+
+
 
 //-----BOTONES "AGREGAR AL CARRITO"-----
 
 //-----ESTOY INTENTANDO PENSAR LA LOGICA PARA NO TENER QUE AGREGARLOS UNO POR UNO CON LOS ID's
-let agregarCarrito = document.getElementById("PIZZA FRIZZIO");
-agregarCarrito.addEventListener("click", sumarACarrito);
-
-let agregarCarrito2 = document.getElementById("TENTACION CADBURY");
-agregarCarrito2.addEventListener("click", sumarACarrito);
-
-let agregarCarrito3 = document.getElementById("EMPANADAS FRIZZIO");
-agregarCarrito3.addEventListener("click", sumarACarrito);
-
-let agregarCarrito4 = document.getElementById("BOMBON ESCOCÉS");
-agregarCarrito4.addEventListener("click", sumarACarrito);
-
-let agregarCarrito5 = document.getElementById("PALITO HELADO FRUTILLA");
-agregarCarrito5.addEventListener("click", sumarACarrito);
 
 
+// let agregarCarrito = document.getElementById("PIZZA FRIZZIO");
+// agregarCarrito.addEventListener("click", sumarACarrito);
 
+// let agregarCarrito2 = document.getElementById("TENTACION CADBURY");
+// agregarCarrito2.addEventListener("click", sumarACarrito);
 
-function sumarACarrito(){
-    alert("Proximamente... Carrito en construcción")
-}
+// let agregarCarrito3 = document.getElementById("EMPANADAS FRIZZIO");
+// agregarCarrito3.addEventListener("click", sumarACarrito);
+
+// let agregarCarrito4 = document.getElementById("BOMBON ESCOCÉS");
+// agregarCarrito4.addEventListener("click", sumarACarrito);
+
+// let agregarCarrito5 = document.getElementById("PALITO HELADO FRUTILLA");
+// agregarCarrito5.addEventListener("click", sumarACarrito);
 
 
 // function viewsArrayInput(){

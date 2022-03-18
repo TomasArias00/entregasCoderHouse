@@ -125,11 +125,13 @@ body{
     }
 
     .buscador__carrito{
+        position: relative;
         height: 100%;
         width: 10%;
         display: flex;
-        justify-content: right;
+        justify-content: center;
         padding-right: 2rem;
+        cursor: pointer;
 
         .buscador__carrito__svg{
             height: 100%;
@@ -141,9 +143,20 @@ body{
                 height: 40%;
             }
             :hover{
-                transform: scale(1.08);
+                transform: scale(1.01);
                 transition: 0.5s;
             }
+    }
+
+    .badge{
+    position: absolute;
+    top: 4px;
+    right: 80px;
+    padding: 4px 8px;
+    border-radius: 50%;
+    background-color: $azulGrido;
+    border: 2px solid white;
+     color: white;
     }
     }
 }
