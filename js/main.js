@@ -51,6 +51,7 @@ let filtroValor = "";
 let carritoSwitch = 0;
 let carrito = [];
 const divisa = "$"
+let carritoIndice = 0;
 
 
 
@@ -174,42 +175,86 @@ function guardadoJson(){
 
 function sumarACarrito(producto){
     carrito.push(producto);
-    console.log("insertando: "+producto.name)
-    console.log(carrito);
+    console.log("insertando: "+producto.name);
     guardadoJson();
     let contadorCarrito = document.getElementById("counterCarrito");
     contadorCarrito.innerText = carrito.length;
 }
 
+function finalizarCompra(){
+    alert("PAGANDO...");
+    console.log("pagando...")
+}
+
+let carritoTotal = 0;
+
 let botonCarrito = document.getElementById("carrito");
 botonCarrito.addEventListener("click", mostrarCarrito);
+// botonCarrito.addEventListener("click", abrirCarrito);
 
 function mostrarCarrito(){
-    cards__container.innerHTML= "";
+    carritoTotal=0;
+    console.log("CARRITO ORIGINAL: ", carrito)
+    document.getElementById("sideNav").style.width= "20rem";
+    let newItemCarrito = document.createElement('div');
+    let carrito__container = document.querySelector('.carritoSideContainer');
+    carritoTotal = 0;
     if(carritoSwitch==0){
         carritoSwitch=1;
+        carrito__container.innerHTML = "";
     for(producto of carrito){
+        carritoTotal += producto.price;
         let contenedorCarrito = document.createElement("div");
-        contenedorCarrito.className = "card__item";
-        contenedorCarrito.innerHTML = `<div class="card__img">
-                                <img src="${producto.imagen}" alt="" class="card__bg">
+        contenedorCarrito.className = "carrito__item";
+        contenedorCarrito.innerHTML = `<div class="carrito__img">
+                                <img src="${producto.imagen}" alt="" class="carrito__bg">
                                 </div>
-                                <div class="card__titulo">
+                                <div class="carrito__titulo">
                                     ${producto.name}
                                 </div>
-                                <div class="card__descrip">
+                                <div class="carrito__descrip">
                                     ${"$"+producto.price}
                                 </div>
-                                <div class="card__button" id="${producto.name}">
-                                    <button class="card__buy">
+                                <div class="carrito__button" id="${producto.name}carrito">
+                                    <button class="carrito__buy">
                                         Quitar del carrito
                                     </button>
-                                </div>
-                                <div>CARRITO</div>`
-        cards__container.appendChild(contenedorCarrito);
-        let miBotonQuitar = document.getElementById(producto.name);
-        miBotonQuitar.addEventListener("click", function(){quitarDelCarrito(producto)});
-        }
+                                </div>`
+        carrito__container.appendChild(contenedorCarrito);
+        let miBotonQuitar = document.getElementById(producto.name+"carrito");
+        let botonElemento = producto;
+        miBotonQuitar.addEventListener("click", function(){quitarDelCarrito(botonElemento)});
+
+        
+        };
+
+        
+        let calculadoraCarrito = document.querySelector('.carrito__total')
+        let contenedorCalculadora = document.createElement("div")
+
+        //Hasta ahora no le encontré una función muy util a algun operador ternario, si
+        //para optimizar if y demás pero nos dijeron que no era necesario reemplazarlos
+        //Asi que realizé está para probar que funciona y que se pueden aplicar...
+
+        carritoTotal==0 ?  calculadoraCarrito.innerHTML = `<div class="carrito__precio">
+        </div>
+        <div class="carrito__comprar ">
+        TOTAL COMPRA: $ ${carritoTotal}
+        </div>`:
+        calculadoraCarrito.innerHTML = `<div class="carrito__precio">
+        </div>
+        <div class="carrito__comprar ">
+        TOTAL COMPRA: $ ${carritoTotal}
+        <button class="button__comprar" id="boton__comprar">
+        Pagar
+        </button>
+        </div>`
+        console.log("Total carrito:", carritoTotal);
+
+        contenedorCalculadora.className = "";
+        let botonComprar = document.getElementById("boton__comprar")
+        botonComprar.addEventListener("click", finalizarCompra);
+        
         
         
     } else{
@@ -218,16 +263,24 @@ function mostrarCarrito(){
     }
 }
 
+
 function quitarDelCarrito(producto){
-    console.log(producto);
-    carritoIndice = carrito.indexOf(producto);
-    if (carritoIndice > -1) {
-        carrito.splice(carritoIndice, 1);
-     }
-    carritoSwitch=0;
-    mostrarCarrito();
-    let contadorCarrito = document.getElementById("counterCarrito");
+    carritoIndice = carrito.indexOf(producto)
+    console.log("eliminando : ", carrito[carritoIndice])
+    carrito.splice(carritoIndice, 1);
+    contadorCarrito = document.getElementById("counterCarrito");
     contadorCarrito.innerText = carrito.length;
+    guardadoJson();
+    carritoSwitch=0;
+    console.log("reiniciando Carrito...")
+    mostrarCarrito();
+}
+
+let closeCarrito = document.getElementById("closeCarrito");
+closeCarrito.addEventListener("click", cerrarCarrito)
+
+function cerrarCarrito(){
+    let cerrarSideBar = document.getElementById("sideNav").style.width=0;
 }
 
 
