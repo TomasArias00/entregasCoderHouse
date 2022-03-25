@@ -179,11 +179,23 @@ function sumarACarrito(producto){
     guardadoJson();
     let contadorCarrito = document.getElementById("counterCarrito");
     contadorCarrito.innerText = carrito.length;
+    swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'Añadido al Carrito...',
+            showConfirmButton: false,
+            timer: 1000,
+    })
 }
 
 function finalizarCompra(){
-    alert("PAGANDO...");
-    console.log("pagando...")
+    swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Compra realizada...',
+        showConfirmButton: false,
+        timer: 1000,
+})
 }
 
 let carritoTotal = 0;
