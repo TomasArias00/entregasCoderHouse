@@ -1,0 +1,42 @@
+[
+    { 
+        "name": "PIZZA FRIZZIO",
+        "stock": "3",
+        "price":"320",
+        "promo": "0.90",
+        "imagen": "./media/img/muza-y-cebolla.png",
+        "categoria": "frizzio, all"
+    },
+    { 
+        "name": "TENTACIÓN CADBURY",
+        "stock": "1",
+        "price":"180",
+        "promo": "0.90",
+        "imagen": "./media/img/tentacion-cadbury.jpg",
+        "categoria": "tentacion, all"
+    },
+    { 
+        "name": "EMPANADAS FRIZZIO",
+        "stock": "5",
+        "price":"250",
+        "promo": "0.95",
+        "imagen": "./media/img/empanadas-grido.png",
+        "categoria": "frizzio, all "
+    },
+    { 
+        "name": "BOMBON ESCOCÉS",
+        "stock": "12",
+        "price":"150",
+        "promo": "0.80",
+        "imagen": "./media/img/bombon-escoces.jpg",
+        "categoria": "bombones, all"
+    },
+    { 
+        "name": "PALITO HELADO - FRUTILLA",
+        "stock": "12",
+        "price":"150",
+        "promo": "0.80",
+        "imagen": "./media/img/palitofrutal-frutilla.jpg",
+        "categoria": "palito, all"
+    }
+]

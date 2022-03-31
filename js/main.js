@@ -1,3 +1,4 @@
+
 function Producto(nombre, stock, precio, promo, imagen, categoria){
     this.name = nombre;
     this.stock = stock;
@@ -37,9 +38,16 @@ const producto4 = new Producto('BOMBON ESCOCÉS', 12, 150, 0.80, './media/img/bo
 const producto5 = new Producto('PALITO HELADO FRUTILLA', 12, 150, 0.80, './media/img/palitofrutal-frutilla.jpg', 'palito, all');
 
 
-//-----NO ENCONTRÉ LA FORMA DE HACER LA CARGA A MI ARRAY DESPUES DE CREAR LOS OBJETOS
+// -----NO ENCONTRÉ LA FORMA DE HACER LA CARGA A MI ARRAY DESPUES DE CREAR LOS OBJETOS
 
-const productos = [producto1, producto2, producto3, producto4, producto5];
+const productosOrigin = [producto1, producto2, producto3, producto4, producto5];
+// const productos = [];
+
+
+// fetch('js/data.json')
+// .then((resp) => resp.json())
+// .then((data) => data.forEach((producto) => productos.push(new Producto(producto.name, producto.stock, producto.price, producto.promo, producto.imagen, producto.categoria))));
+
 
 
 let listadoProductos='';
@@ -53,23 +61,32 @@ let carrito = [];
 const divisa = "$"
 let carritoIndice = 0;
 
+let productos = []
 
 
 
 let newCard = document.createElement('div');
 let cards__container = document.querySelector('.cards__container');
 
-const filtroProductos = [];
+
+
+
+// let productos = [];
 
 function mostrarDefalut(){
-for (let i = 0; i < productos.length; i++){
-    filtroProductos.push(productos[i])
+for (let i = 0; i < productosOrigin.length; i++){
+    console.log("creando filroProductos")
+    productos.push(productosOrigin[i])
 }
 }
 
+mostrarDefalut();
+
+
+
 function limpiarFiltro(){
-    for(let i = 0; i < filtroProductos.length; i++){
-    filtroProductos.splice(i);
+    for(let i = 0; i < productos.length; i++){
+    productos.splice(i);
     console.log("limpiando: "+i)
     }
     let list = document.querySelector('.cards__container');
@@ -78,7 +95,8 @@ function limpiarFiltro(){
 
 function mostrarProductos(){
     cards__container.innerHTML= "";
-    for (const producto of filtroProductos){
+    for (const producto of productos){
+        console.log("adentro del loop...")
         let contenedor = document.createElement("div");
         contenedor.className = "card__item";
         contenedor.innerHTML = `<div class="card__img">
@@ -105,26 +123,22 @@ function mostrarProductos(){
 
 
 function filtroBotonera(filtroValor){
-    console.log("Filtrame las: " +filtroValor)
     limpiarFiltro();
-    const productosFiltrados = productos.filter(x => x.categoria.includes(filtroValor));
-    
+    const productosFiltrados = productosOrigin.filter(x => x.categoria.includes(filtroValor));
+
     for(let i=0; i < productos.length; i++){
-        filtroProductos.splice(i);
+        productos.splice(i);
     }
     for(let i=0; i < productosFiltrados.length; i++){
-        filtroProductos.push(productosFiltrados[i]);
+        productos.push(productosFiltrados[i]);
     }
-    console.log(filtroProductos);
+    console.log(productos);
     mostrarProductos();
 }
 
 
 
-//-----CARGA INICIAL CON TODOS LOS PRODUCTOS-----
-mostrarDefalut();
-mostrarProductos(); 
-obteniendoLocalStorage();
+
 
 function obteniendoLocalStorage(){
     let miCarrito = localStorage.getItem("miCarrito");
@@ -177,6 +191,7 @@ function sumarACarrito(producto){
     carrito.push(producto);
     console.log("insertando: "+producto.name);
     guardadoJson();
+    
     let contadorCarrito = document.getElementById("counterCarrito");
     contadorCarrito.innerText = carrito.length;
     swal.fire({
@@ -186,6 +201,9 @@ function sumarACarrito(producto){
             showConfirmButton: false,
             timer: 1000,
     })
+    carritoSwitch = 0;
+    mostrarCarrito();
+    
 }
 
 function finalizarCompra(){
@@ -295,27 +313,20 @@ function cerrarCarrito(){
     let cerrarSideBar = document.getElementById("sideNav").style.width=0;
 }
 
+//-----CARGA INICIAL CON TODOS LOS PRODUCTOS-----
+mostrarProductos();
+obteniendoLocalStorage();
 
 
-//-----BOTONES "AGREGAR AL CARRITO"-----
-
-//-----ESTOY INTENTANDO PENSAR LA LOGICA PARA NO TENER QUE AGREGARLOS UNO POR UNO CON LOS ID's
 
 
-// let agregarCarrito = document.getElementById("PIZZA FRIZZIO");
-// agregarCarrito.addEventListener("click", sumarACarrito);
 
-// let agregarCarrito2 = document.getElementById("TENTACION CADBURY");
-// agregarCarrito2.addEventListener("click", sumarACarrito);
 
-// let agregarCarrito3 = document.getElementById("EMPANADAS FRIZZIO");
-// agregarCarrito3.addEventListener("click", sumarACarrito);
 
-// let agregarCarrito4 = document.getElementById("BOMBON ESCOCÉS");
-// agregarCarrito4.addEventListener("click", sumarACarrito);
 
-// let agregarCarrito5 = document.getElementById("PALITO HELADO FRUTILLA");
-// agregarCarrito5.addEventListener("click", sumarACarrito);
+
+
+
 
 
 // function viewsArrayInput(){
