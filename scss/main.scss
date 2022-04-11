@@ -298,10 +298,11 @@ body{
             flex-direction: column;
             flex-wrap: wrap;
             align-items: center;
-            height: 8rem;
+            height: 10rem;
             width: 90%;
             border-radius: 5px;
             box-shadow: 0px 3px 8px 1px rgba(56, 56, 56, 0.699);
+            padding-top: 1rem;
 
 
             .carrito__img{
@@ -315,18 +316,35 @@ body{
             }
 
             .carrito__titulo{
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 position: relative;
                 width: 80%;
                 height: 20%;
                 text-align: center;
-                padding-top: 2rem;
             }
 
+            
+
             .carrito__descrip{
-                width: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 25%;
                 height: 20%;
                 text-align: center;
-                padding-top: 1rem;
+                
+            }
+            .carrito__cantidad{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 25%;
+                height: 20%;
+                text-align: center;
+                border-radius: 5px;
+                box-shadow: 0px 1px 4px 1px rgba(56, 56, 56, 0.699);
             }
 
             .carrito__button{

@@ -44,9 +44,6 @@ const productosOrigin = [producto1, producto2, producto3, producto4, producto5];
 // const productos = [];
 
 
-// fetch('js/data.json')
-// .then((resp) => resp.json())
-// .then((data) => data.forEach((producto) => productos.push(new Producto(producto.name, producto.stock, producto.price, producto.promo, producto.imagen, producto.categoria))));
 
 
 
@@ -61,8 +58,8 @@ let carrito = [];
 const divisa = "$"
 let carritoIndice = 0;
 
-let productos = []
-
+let productos = [];
+let duplicados = [];
 
 
 let newCard = document.createElement('div');
@@ -75,7 +72,6 @@ let cards__container = document.querySelector('.cards__container');
 
 function mostrarDefalut(){
 for (let i = 0; i < productosOrigin.length; i++){
-    console.log("creando filroProductos")
     productos.push(productosOrigin[i])
 }
 }
@@ -96,18 +92,13 @@ function limpiarFiltro(){
 function mostrarProductos(){
     cards__container.innerHTML= "";
     for (const producto of productos){
-        console.log("adentro del loop...")
         let contenedor = document.createElement("div");
         contenedor.className = "card__item";
         contenedor.innerHTML = `<div class="card__img">
                                 <img src="${producto.imagen}" alt="" class="card__bg">
                                 </div>
-                                <div class="card__titulo">
-                                    ${producto.name}
-                                </div>
-                                <div class="card__descrip">
-                                    ${"$"+producto.price}
-                                </div>
+                                <div class="card__titulo">${producto.name}</div>
+                                <div class="card__descrip">${"$"+producto.price}</div>
                                 <div class="card__button" id="${producto.name}">
                                     <button class="card__buy">
                                         Agregar al Carrito
@@ -115,9 +106,13 @@ function mostrarProductos(){
                                 </div>`
 
         cards__container.appendChild(contenedor);
-        let miBoton = document.getElementById(producto.name);
-        miBoton.addEventListener("click", function(){sumarACarrito(producto)});
+    
     }
+    const agregarButtons = document.querySelectorAll('.card__button');
+
+agregarButtons.forEach(addToCartButton => {
+    addToCartButton.addEventListener('click', addToCartClicked);
+})
     }
 
 
@@ -139,7 +134,7 @@ function filtroBotonera(filtroValor){
 
 
 
-
+//------obteniendo LocalStorage-----
 function obteniendoLocalStorage(){
     let miCarrito = localStorage.getItem("miCarrito");
     if (miCarrito==undefined){
@@ -149,6 +144,12 @@ function obteniendoLocalStorage(){
         let contadorCarrito = document.getElementById("counterCarrito");
     contadorCarrito.innerText = carrito.length;
     }
+}
+
+//------Guardar en LocalStorage-----
+function guardadoJson(){
+    let carritoJson = JSON.stringify(carrito);
+    localStorage.setItem("miCarrito", carritoJson);
 }
 
 
@@ -177,135 +178,6 @@ boton5.addEventListener("click", function(){filtroBotonera("all")});
 
 
 
-//------Guardar en LocalStorage-----
-function guardadoJson(){
-    let carritoJson = JSON.stringify(carrito);
-    localStorage.setItem("miCarrito", carritoJson);
-}
-
-
-
-
-
-function sumarACarrito(producto){
-    carrito.push(producto);
-    console.log("insertando: "+producto.name);
-    guardadoJson();
-    
-    let contadorCarrito = document.getElementById("counterCarrito");
-    contadorCarrito.innerText = carrito.length;
-    swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Añadido al Carrito...',
-            showConfirmButton: false,
-            timer: 1000,
-    })
-    carritoSwitch = 0;
-    mostrarCarrito();
-    
-}
-
-function finalizarCompra(){
-    swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Compra realizada...',
-        showConfirmButton: false,
-        timer: 1000,
-})
-}
-
-let carritoTotal = 0;
-
-let botonCarrito = document.getElementById("carrito");
-botonCarrito.addEventListener("click", mostrarCarrito);
-// botonCarrito.addEventListener("click", abrirCarrito);
-
-function mostrarCarrito(){
-    carritoTotal=0;
-    console.log("CARRITO ORIGINAL: ", carrito)
-    document.getElementById("sideNav").style.width= "20rem";
-    let newItemCarrito = document.createElement('div');
-    let carrito__container = document.querySelector('.carritoSideContainer');
-    carritoTotal = 0;
-    if(carritoSwitch==0){
-        carritoSwitch=1;
-        carrito__container.innerHTML = "";
-    for(producto of carrito){
-        carritoTotal += producto.price;
-        let contenedorCarrito = document.createElement("div");
-        contenedorCarrito.className = "carrito__item";
-        contenedorCarrito.innerHTML = `<div class="carrito__img">
-                                <img src="${producto.imagen}" alt="" class="carrito__bg">
-                                </div>
-                                <div class="carrito__titulo">
-                                    ${producto.name}
-                                </div>
-                                <div class="carrito__descrip">
-                                    ${"$"+producto.price}
-                                </div>
-                                <div class="carrito__button" id="${producto.name}carrito">
-                                    <button class="carrito__buy">
-                                        Quitar del carrito
-                                    </button>
-                                </div>`
-        carrito__container.appendChild(contenedorCarrito);
-        let miBotonQuitar = document.getElementById(producto.name+"carrito");
-        let botonElemento = producto;
-        miBotonQuitar.addEventListener("click", function(){quitarDelCarrito(botonElemento)});
-
-        
-        };
-
-        
-        let calculadoraCarrito = document.querySelector('.carrito__total')
-        let contenedorCalculadora = document.createElement("div")
-
-        //Hasta ahora no le encontré una función muy util a algun operador ternario, si
-        //para optimizar if y demás pero nos dijeron que no era necesario reemplazarlos
-        //Asi que realizé está para probar que funciona y que se pueden aplicar...
-
-        carritoTotal==0 ?  calculadoraCarrito.innerHTML = `<div class="carrito__precio">
-        </div>
-        <div class="carrito__comprar ">
-        TOTAL COMPRA: $ ${carritoTotal}
-        </div>`:
-        calculadoraCarrito.innerHTML = `<div class="carrito__precio">
-        </div>
-        <div class="carrito__comprar ">
-        TOTAL COMPRA: $ ${carritoTotal}
-        <button class="button__comprar" id="boton__comprar">
-        Pagar
-        </button>
-        </div>`
-        console.log("Total carrito:", carritoTotal);
-
-        contenedorCalculadora.className = "";
-        let botonComprar = document.getElementById("boton__comprar")
-        botonComprar.addEventListener("click", finalizarCompra);
-        
-        
-        
-    } else{
-        mostrarProductos();
-        carritoSwitch=0;
-    }
-}
-
-
-function quitarDelCarrito(producto){
-    carritoIndice = carrito.indexOf(producto)
-    console.log("eliminando : ", carrito[carritoIndice])
-    carrito.splice(carritoIndice, 1);
-    contadorCarrito = document.getElementById("counterCarrito");
-    contadorCarrito.innerText = carrito.length;
-    guardadoJson();
-    carritoSwitch=0;
-    console.log("reiniciando Carrito...")
-    mostrarCarrito();
-}
-
 let closeCarrito = document.getElementById("closeCarrito");
 closeCarrito.addEventListener("click", cerrarCarrito)
 
@@ -320,204 +192,149 @@ obteniendoLocalStorage();
 
 
 
+const carrito__container = document.querySelector('.carritoSideContainer');
+ 
+const comprarButton = document.querySelector('.button__comprar');
+comprarButton.addEventListener('click', comprarButtonClicked)
+
+function comprarButtonClicked(){
+    carrito__container.innerHTML = ``;
+    countCarrito = 0;
+    contadorCarritoItem.innerText = countCarrito;
+    swal.fire({
+        position: 'top',
+        icon: 'success',
+        title: 'Gracias por su compra...',
+        showConfirmButton: false,
+        timer: 1800,
+})
+    cerrarCarrito();
+    actualizarTotalCarrito();
+    
+
+
+}
+
+function addToCartClicked(event){
+    const button = event.target;
+    const item = button.closest('.card__item');
+
+    const itemTitle = item.querySelector('.card__titulo').textContent;
+    const itemPrice = item.querySelector('.card__descrip').textContent;
+    const itemImage = item.querySelector('.card__bg').src;
+
+    addItemToShoppingCart(itemTitle, itemPrice, itemImage);
+}
 
 
 
+let contadorCarritoItem = document.getElementById("counterCarrito");
+let countCarrito = 0;
+function contadorCarritoSuma(){
+    countCarrito++;
+    contadorCarritoItem.innerText = countCarrito;
+}
+function contadorCarritoResta(event){
+    const cantidadItem = event.target.parentElement.parentElement;
+    let cantidadItemValor = cantidadItem.querySelector('.carrito__cantidad').value;
+    countCarrito = countCarrito - cantidadItemValor;
+    contadorCarritoItem.innerText = countCarrito;
+}
 
+function addItemToShoppingCart(itemTitle, itemPrice, itemImage){
 
+    const titulosCarrito = carrito__container.getElementsByClassName('carrito__titulo');
 
-
-
-
-// function viewsArrayInput(){
-//     let arrayInput = new Array();
-//     let inputValues = document.getElementsByClassName("buscador__filtro"),
-//     namesValues = [].map.call(inputValues,function(dataInput){
-//         arrayInput.push(dataInput.value);
-//     });
-//     arrayInput.forEach(function(inputsValuesData){
-//         switch(arrayInput.toString()){
-//             case(producto1.name):
-//             console.log(producto1);
-//             break;
-//             case(!producto1.name)
-//             console.log("Producto invalido!")
-//         }
-
-//     });
-//  }
-
-
-//crear el listado de prodcutos disponibles
-// for(names in productos){
-//     let indice = parseInt(names) + 1;
-//     listadoProductos += indice+'- '+productos[names].name+'\n';
-// }
-
-// do{
-// productoCompra = parseInt(prompt('Bienvenido a Grido!\nQue te gustaría comprar?\n'+listadoProductos))
-
-// switch(productoCompra){
-//     case(1):
-//     cantidadProducto = parseInt(prompt('El precio de las Pizzas Frizzio es de: $'+producto1.price+'\nCuantas vas a llevar?'));
-//     producto1.sell(cantidadProducto)
-
-//     break;
-//     case(2):
-//     cantidadProducto = parseInt(prompt('El precio del Helado Tentación es de: $'+producto2.price+'\nCuantos vas a llevar?'));
-//     producto2.sell(cantidadProducto)
-
-//     break;
-//     case(3):
-//     cantidadProducto = parseInt(prompt('El precio de las Hamburguesas Frizzio es de: $'+producto3.price+'\nCuantas vas a llevar?'));
-//     producto3.sell(cantidadProducto)
-
-//     break;
-//     case(4):
-//     cantidadProducto = parseInt(prompt('El precio del Bomboón Escocés es de: $'+producto4.price+'\nCuantos vas a llevar?'));
-//     producto4.sell(cantidadProducto)
-
-//     break;
+    for(let i = 0; i < titulosCarrito.length; i++){
+        if(titulosCarrito[i].innerText === itemTitle){
+            let elementCantidad = titulosCarrito[i].parentElement.querySelector('.carrito__cantidad');
+            elementCantidad.value++;
+            actualizarTotalCarrito();
+            contadorCarritoSuma();
+            agregarAlert();
+            return;
+        }
+        
+    }
 
     
-// }
-//     stillBuying = parseInt(prompt('Quisiera agregar comprar algo más\n1- SI\n2- NO'));
-//     if(stillBuying==1){
-//         seguirComprando=1;
-//     }else if(stillBuying==2){
-//         seguirComprando=0;
-//     }
+    agregarAlert();
+    let newItemCarrito = document.createElement(`div`);
+    newItemCarrito.className = "carrito__item"
+    const carritoContent = `<div class="carrito__img">
+                                <img src="${itemImage}" alt="" class="carrito__bg">
+                            </div>
+                            <div class="carrito__titulo">${itemTitle}</div>
+                            <input class="carrito__cantidad" type=number value=1></input>
+                            <div class="carrito__descrip">${itemPrice}</div>
+                            <div class="carrito__button" >
+                                <button class="carrito__buy">
+                                    Quitar del carrito
+                                </button>
+                            </div>`
+    newItemCarrito.innerHTML = carritoContent;
+    carrito__container.append(newItemCarrito);
+    contadorCarritoSuma();
+    actualizarTotalCarrito();
 
-// } while(seguirComprando==1)
+    newItemCarrito.querySelector('.carrito__button').addEventListener('click', removeCarritoItem);
 
-// parseInt(prompt('Tu lista de compras es: '+carrito+'\nEl total a pagar es de: $'+totalAPagar+'\nSi abona en efectivo el total sería de: $'+totalAPagarEfectivo))
-
-// let precioCono = 0;
-// let listadoBochas ="\n";
-// let terminarCompra=0;
-// let cantidadBochas=0;
-// let saborBocha;
-// let seguirComprando=1;
-// let precioTotal = 0;
-// let precioTotal = 0;
-
-// function venta1(producto, stock){
-//     if(stock<=0){
-//         alert('Nos quedamos sin stock de sabor '+producto+', te gustaría elegir otro?');
-//         i-=1;
-//     }else{
-//         listadoBochas = listadoBochas+'- '+producto+'\n';
-//         stock-=1;
-//     }
-// }
-
-// function venta2(producto, stock){
-//     if(stock<=0){
-//         alert('Nos quedamos sin potes de '+producto+', te gustaría elegir otro producto?');
-//     }else{
-//         stock-=1;
-//         console.log(stock);
-//     }
-
-// } 
-
-// function cantSabores(cantidad, precio){
-//     if(cantidad>0){
-//         precioTotal+=precio;
-//         console.log(precioTotal);
-//         for(let i = 0; i < cantidad; i++){
-//                 sabor = prompt("Tenemoos los siguientes sabores disponibles"+"\n- "+heladoA+"\n- "+heladoB+"\n- "+heladoC+"\n- "+heladoD+"\n- "+heladoE+"\nIngrese el sabor n°: "+(i+1));
-//                 sabor = sabor.toLowerCase();
-//                 switch(sabor){
-//                     case "chocolate":
-//                         venta1(heladoA, heladoAStock);
-//                         break;
-//                     case "vainilla":
-//                         venta1(heladoB, heladoBStock);
-//                         break;
-//                     case "dulce de leche":
-//                         venta1(heladoC, heladoCStock);
-//                         break;
-//                     case "tramontana":
-//                         venta1(heladoD, heladoDStock);
-//                         break;
-//                     case "frutilla":
-//                         venta1(heladoE, heladoEStock);
-//                         break;
-//                 }
-//         }
-//     } 
+    newItemCarrito.querySelector('.carrito__cantidad').addEventListener('change', cambioCantidadCarrito)
+}
 
 
+const carritoSvg = document.querySelector('.buscador__carrito')
+carritoSvg.addEventListener('click', abrirCarrito)
+function abrirCarrito(){
+document.getElementById("sideNav").style.width= "20rem";
+}
 
-// function cantBochas(cantidad, precio){
-//     if (cantidad>0){
-//         precioTotal+=cantidad*precio;
-//         console.log(precioTotal);
-//             for(let i = 0; i < cantidad; i++){
-//                 saborBocha = prompt("Tenemoos los siguientes sabores disponibles"+"\n- "+heladoA+"\n- "+heladoB+"\n- "+heladoC+"\n- "+heladoD+"\n- "+heladoE+"\nIngrese el sabor de la bocha n°: "+(i+1));
-//                 saborBocha = saborBocha.toLowerCase();
-//                 switch(saborBocha){
-//                     case "chocolate":
-//                         venta1(heladoA, heladoAStock);
-//                         break;
-//                     case "vainilla":
-//                         venta1(heladoB, heladoBStock);
-//                         break;
-//                     case "dulce de leche":
-//                         venta1(heladoC, heladoCStock);
-//                         break;
-//                     case "tramontana":
-//                         venta1(heladoD, heladoDStock);
-//                         break;
-//                     case "frutilla":
-//                         venta1(heladoE, heladoEStock);
-//                         break;
-//                 }
-//             }
-//     }
-// }
+function actualizarTotalCarrito(){
+    let total = 0;
+    const carritoTotal = document.querySelector('.span__total__precio');
 
+    const itemsCarrito = document.querySelectorAll('.carrito__item');
 
+    itemsCarrito.forEach(itemsCarrito => {
+        const carritoItemPrice = Number(itemsCarrito.querySelector('.carrito__descrip').textContent.replace('$',''));
 
-// do{
-//     producto = parseInt(prompt('Bienvenido a Grido helados\nQue le gustaría pedir hoy?\n1- Cucurucho\n2- 1 Kg.\n3- 1/2 Kg.'));
-    
-//     switch(producto){
-//     case(1):
-//     listadoBochas="\n";
-//     cantidadBochas = parseInt(prompt("De cuantas bochas va a querer su helado?"));
-//     cantBochas(cantidadBochas, producto1Precio);
-//     alert("Los sabores elegidos son:"+listadoBochas+'y el total es de: $'+precioTotal);
-//     break;
-//     case(2):
-//     listadoBochas="\n";
-//     cantidadSabores = parseInt(prompt("De cuantos sabores va a querer su helado?\n(Máximo 4 Sabores)"));
-//     cantSabores(cantidadSabores, producto2Precio);
-//     alert('Los sabores elegidos son: '+listadoBochas+'\nEl precio total sería de: $'+precioTotal);
-//     break;
-//     case(3):
-//     listadoBochas="\n";
-//     cantidadSabores = parseInt(prompt("De cuantos sabores va a querer su helado?\n(Máximo 3 Sabores)"));
-//     cantSabores(cantidadSabores, producto3Precio);
-//     alert('Los sabores elegidos son: '+listadoBochas+'\nEl precio total sería de: $'+precioTotal);
-//     break;
-// }
+        const carritoItemsCantidad = Number(itemsCarrito.querySelector('.carrito__cantidad').value)
+        
 
-//     stillBuying = parseInt(prompt('Quisiera agregar comprar algo más\n1- SI\n2- NO'));
-//     if(stillBuying==1){
-//         seguirComprando=1;
-//     }else if(stillBuying==2){
-//         seguirComprando=0;
-// }
-    
-// } while(seguirComprando==1)
+        total = total + carritoItemPrice * carritoItemsCantidad;
+        
+    });
 
-// alert('Gracias por su compra!\nEl monto total a pagar es de: $'+precioTotal+'.')
+    carritoTotal.innerHTML = `$${total}`;
+}
+
+function removeCarritoItem(event){
+    const buttonClicked = event.target; 
+    buttonClicked.closest('.carrito__item').remove();
+    actualizarTotalCarrito();
+
+    swal.fire({
+            position: 'top',
+            icon: 'success',
+            title: 'Eliminando del Carrito...',
+            showConfirmButton: false,
+            timer: 1500,
+    })
+    contadorCarritoResta(event);
+}
+
+function cambioCantidadCarrito(event){
+    const input = event.target;
+    actualizarTotalCarrito();
+}
 
 
-
-
-
-
-
+function agregarAlert(){
+    swal.fire({
+        position: 'top',
+        icon: 'success',
+        title: 'Añadido al Carrito...',
+        showConfirmButton: false,
+        timer: 1000,
+})
+}
